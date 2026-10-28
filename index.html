@@ -56,6 +56,11 @@ h1{font-size:clamp(32px,8.4vw,60px);line-height:1.08;letter-spacing:-.025em;marg
 .retrato figcaption{position:absolute;left:12px;bottom:12px;max-width:calc(100% - 24px);padding:10px 14px;border-radius:14px;background:rgba(1,32,27,.94);color:#F7F3EC;box-shadow:0 10px 24px -14px rgba(0,0,0,.6)}
 .retrato .nome{display:block;font-weight:800;font-size:17px;line-height:1.25}
 .retrato .sub{display:block;font-size:14px;line-height:1.4;color:#E6DFD3}
+.retrato .testado{display:block;margin-top:2px}
+.siga .rot{display:inline-flex;align-items:center;gap:8px}
+.ig{flex:none;display:block}
+.toc-movel{transition:opacity .2s}
+.toc-movel.some{opacity:0;pointer-events:none}
 .retrato .handle{color:#F2A88A;font-weight:800;text-decoration:none}
 .retrato .handle:hover{text-decoration:underline}
 .avatar{flex:none;width:56px;height:56px;border-radius:50%;object-fit:cover;background:#fff;box-shadow:0 0 0 3px var(--kombu),0 0 0 5px var(--orange)}
@@ -143,7 +148,7 @@ pre code{background:none;color:var(--code-ink);padding:0;font-size:14px;line-hei
 <body class="idx">
 <div class="progresso" aria-hidden="true"><span></span></div>
 <header class="topo"><a class="marca" href="" aria-label="Guias de Claude Code, início"><img src="assets/assinatura.svg" alt="Francisco Neto" width="138" height="40"></a><a class="todos" href="">Todos os guias</a></header>
-<section class="hero"><div class="hero-in"><div class="hero-txt"><span class="tag">GUIAS</span><h1>Guias de Claude Code</h1><p class="promessa">Guias práticos de Claude Code, com passo a passo, erros e limites.</p><ul class="meta"><li>Atualizado em 28/10/2026</li></ul></div><div class="retrato-wrap"><figure class="retrato"><img src="assets/autor-inteiro.jpg" width="899" height="1200" alt="Francisco Neto" fetchpriority="high" decoding="async"><figcaption><span class="nome">Francisco Neto</span><span class="sub"><a class="handle" href="https://instagram.com/francisconeto.dev" rel="noopener">@francisconeto.dev</a> · Testado por mim no Claude Code</span></figcaption></figure></div></div></section><div class="corpo"><ul class="lista"><li><a class="card" href="mcp/"><span class="kw">Guia MCP</span><h3>Antes de ligar um MCP: veja o que cada ferramenta declara</h3><p>Você vai ver, antes de ligar um servidor MCP no Claude Code, se cada ferramenta só lê, se é seguro repetir e se pode destruir.</p><div class="pe"><span class="min">5 min de leitura</span><span class="ir">Abrir o guia</span></div></a></li><li><a class="card" href="lentes/"><span class="kw">Guia Lentes</span><h3>Como montar um fluxo de agentes que escolhe o que postar</h3><p>Você vai montar no Claude Code uma redação de agentes que debate, ordena e revisa ideias de post, com a decisão final sempre sua.</p><div class="pe"><span class="min">5 min de leitura</span><span class="ir">Abrir o guia</span></div></a></li></ul></div>
+<section class="hero"><div class="hero-in"><div class="hero-txt"><span class="tag">GUIAS</span><h1>Guias de Claude Code</h1><p class="promessa">Guias práticos de Claude Code, com passo a passo, erros e limites.</p><ul class="meta"><li>Atualizado em 28/10/2026</li></ul></div><div class="retrato-wrap"><figure class="retrato"><img src="assets/autor-inteiro.jpg" width="899" height="1200" alt="Francisco Neto" fetchpriority="high" decoding="async"><figcaption><span class="nome">Francisco Neto</span><span class="sub"><a class="handle" href="https://instagram.com/francisconeto.dev" rel="noopener">@francisconeto.dev</a><span class="testado">Testado por mim no Claude Code</span></span></figcaption></figure></div></div></section><div class="corpo"><ul class="lista"><li><a class="card" href="mcp/"><span class="kw">Guia MCP</span><h3>Antes de ligar um MCP: veja o que cada ferramenta declara</h3><p>Você vai ver, antes de ligar um servidor MCP no Claude Code, se cada ferramenta só lê, se é seguro repetir e se pode destruir.</p><div class="pe"><span class="min">5 min de leitura</span><span class="ir">Abrir o guia</span></div></a></li><li><a class="card" href="lentes/"><span class="kw">Guia Lentes</span><h3>Como montar um fluxo de agentes que escolhe o que postar</h3><p>Você vai montar no Claude Code uma redação de agentes que debate, ordena e revisa ideias de post, com a decisão final sempre sua.</p><div class="pe"><span class="min">5 min de leitura</span><span class="ir">Abrir o guia</span></div></a></li></ul></div>
 <footer class="rodape"><a class="marca" href="" aria-label="Guias de Claude Code, início"><img src="assets/assinatura.svg" alt="Francisco Neto" width="152" height="44"></a><span>Guias de Claude Code · <a href="https://instagram.com/francisconeto.dev" rel="noopener">@francisconeto.dev</a></span></footer>
 <script>
 (function(){
@@ -165,6 +170,7 @@ var pend=false;window.addEventListener('scroll',function(){if(pend)return;pend=t
 window.addEventListener('resize',function(){progresso();calcula()});
 var det=document.querySelector('.toc-movel');
 if(det){det.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){det.open=false})})}
+var fim=document.getElementById('fim');if(det&&fim&&'IntersectionObserver' in window){new IntersectionObserver(function(e){var v=e[0].isIntersecting||e[0].boundingClientRect.top<0;det.classList.toggle('some',v);if(v)det.open=false}).observe(fim)}
 progresso();calcula();
 })();
 </script>
