@@ -8,72 +8,165 @@
 <meta name="author" content="Francisco Neto">
 <meta name="theme-color" content="#F3EDE2">
 <link rel="canonical" href="https://francisconeto-dev.github.io/guias-claude/">
+<link rel="icon" href="assets/assinatura.svg" type="image/svg+xml">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="pt_BR">
 <meta property="og:site_name" content="Guias de Claude Code">
 <meta property="og:title" content="Guias de Claude Code">
 <meta property="og:description" content="Guias práticos de Claude Code, com passo a passo, erros e limites.">
 <meta property="og:url" content="https://francisconeto-dev.github.io/guias-claude/">
-<meta name="twitter:card" content="summary">
+<meta property="og:image" content="https://francisconeto-dev.github.io/guias-claude/assets/og-index.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Guias de Claude Code">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Guias de Claude Code">
 <meta name="twitter:description" content="Guias práticos de Claude Code, com passo a passo, erros e limites.">
+<meta name="twitter:image" content="https://francisconeto-dev.github.io/guias-claude/assets/og-index.png">
+<meta name="twitter:image:alt" content="Guias de Claude Code">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#F3EDE2;--card:#FBF8F2;--ink:#151412;--ink2:#4A463F;--line:#DDD4C4;--orange:#C8562F;--orange-soft:#F4DDD0;--green:#2E6B4A;--green-soft:#DCE9DF;--code-bg:#1B1A17;--code-ink:#F1ECE2}
+:root{--bg:#F3EDE2;--card:#FBF8F2;--ink:#151412;--ink2:#4A463F;--line:#DDD4C4;--orange:#D97757;--orange-ink:#A9492A;--orange-soft:#F6E1D6;--green:#2E6B4A;--green-soft:#DCE9DF;--kombu:#01201B;--code-bg:#1B1A17;--code-ink:#F1ECE2}
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:Manrope,system-ui,-apple-system,sans-serif;font-size:17px;line-height:1.65}
-.wrap{max-width:760px;margin:0 auto;padding:28px 16px 40px}
-a{color:var(--orange);text-underline-offset:3px;overflow-wrap:anywhere}
-.top{display:flex;align-items:center;gap:10px;font-weight:700;font-size:14px;letter-spacing:.02em;margin-bottom:28px}
-.top a{color:var(--ink);text-decoration:none}
-.dot{width:10px;height:10px;border-radius:50%;background:var(--orange);display:inline-block}
-.tag{display:inline-block;background:var(--green-soft);color:var(--green);font-weight:700;font-size:13px;padding:4px 10px;border-radius:999px;margin-bottom:14px}
-h1{font-size:clamp(28px,7vw,42px);line-height:1.15;letter-spacing:-.02em;margin:0 0 16px;font-weight:800}
-h2{font-size:22px;line-height:1.3;margin:40px 0 12px;font-weight:800;padding-top:4px;border-top:2px solid var(--line);padding-top:24px}
-h2::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--orange);margin-right:10px;vertical-align:middle;position:relative;top:-2px}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Manrope,system-ui,-apple-system,sans-serif;font-size:17px;line-height:1.65;overflow-x:hidden}
+a{color:var(--orange-ink);text-underline-offset:3px;overflow-wrap:anywhere}
+a:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid var(--orange);outline-offset:3px;border-radius:6px}
+.progresso{position:fixed;top:0;left:0;right:0;height:3px;z-index:50;pointer-events:none}
+.progresso span{display:block;height:100%;background:var(--orange);transform-origin:0 50%;transform:scaleX(0)}
+.topo{max-width:1120px;margin:0 auto;padding:18px 16px 0;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.marca{display:inline-flex;line-height:0}
+.marca img{height:40px;width:auto;display:block}
+.topo .todos{font-size:14px;font-weight:700;color:var(--green);text-decoration:none}
+.topo .todos:hover{text-decoration:underline}
+.hero{max-width:1120px;margin:0 auto;padding:36px 16px 28px}
+.tag{display:inline-block;background:var(--green-soft);color:var(--green);font-weight:800;font-size:12px;letter-spacing:.08em;padding:5px 11px;border-radius:999px;margin-bottom:16px}
+h1{font-size:clamp(32px,8.4vw,60px);line-height:1.08;letter-spacing:-.025em;margin:0 0 18px;font-weight:800;max-width:20ch;text-wrap:balance}
+.promessa{font-size:clamp(18px,4.6vw,21px);line-height:1.5;color:var(--ink2);margin:0 0 22px;max-width:44ch;font-weight:500}
+.meta{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 26px;padding:0;list-style:none}
+.meta li{font-size:14px;font-weight:700;color:var(--ink2);background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 12px}
+.meta li.tempo{color:var(--orange-ink);border-color:#EBC3B0;background:var(--orange-soft)}
+.hero-in{display:flex;flex-direction:column;gap:26px}
+.retrato-wrap{position:relative;order:-1;margin:0 6px 0 0}
+.retrato-wrap::before{content:"";position:absolute;inset:14px -6px -10px 14px;border-radius:26px;background:var(--orange)}
+.retrato{position:relative;margin:0;border-radius:24px;overflow:hidden;background:#fff;aspect-ratio:1/1;box-shadow:0 18px 40px -26px rgba(40,25,10,.55)}
+.retrato img{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 4%}
+.retrato figcaption{position:absolute;left:12px;bottom:12px;max-width:calc(100% - 24px);padding:10px 14px;border-radius:14px;background:rgba(1,32,27,.94);color:#F7F3EC;box-shadow:0 10px 24px -14px rgba(0,0,0,.6)}
+.retrato .nome{display:block;font-weight:800;font-size:17px;line-height:1.25}
+.retrato .sub{display:block;font-size:14px;line-height:1.4;color:#E6DFD3}
+.retrato .handle{color:#F2A88A;font-weight:800;text-decoration:none}
+.retrato .handle:hover{text-decoration:underline}
+.avatar{flex:none;width:56px;height:56px;border-radius:50%;object-fit:cover;background:#fff;box-shadow:0 0 0 3px var(--kombu),0 0 0 5px var(--orange)}
+.siga .quem{display:flex;align-items:center;gap:14px}
+.corpo{max-width:1120px;margin:0 auto;padding:0 16px 40px;border-top:1px solid var(--line)}
+.toc-movel{position:sticky;top:10px;z-index:20;margin:20px 0 4px;background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:0 8px 20px -14px rgba(60,40,20,.5)}
+.toc-movel .toc{max-height:60vh;overflow:auto}
+.toc-movel .atual{display:block;font-size:13px;font-weight:700;color:var(--orange-ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.toc-movel .rotulos{min-width:0;display:flex;flex-direction:column}
+.toc-movel summary{cursor:pointer;list-style:none;padding:14px 16px;font-weight:800;font-size:15px;display:flex;justify-content:space-between;align-items:center;min-height:48px}
+.toc-movel summary::-webkit-details-marker{display:none}
+.toc-movel summary::after{content:"";flex:none;margin-left:12px;width:9px;height:9px;border-right:2px solid var(--ink2);border-bottom:2px solid var(--ink2);transform:rotate(45deg);margin-top:-4px;transition:transform .2s}
+.toc-movel[open] summary::after{transform:rotate(-135deg);margin-top:4px}
+.toc-movel .toc{padding:0 8px 10px}
+.toc ol{list-style:none;margin:0;padding:0}
+.toc li{margin:0}
+.toc a{display:block;padding:8px 10px 8px 14px;border-left:2px solid var(--line);color:var(--ink2);text-decoration:none;font-size:15px;font-weight:600;line-height:1.35}
+.toc a.n3{padding-left:28px;font-size:14px}
+.toc a:hover{color:var(--ink)}
+.toc a.ativo{color:var(--orange-ink);border-left-color:var(--orange);font-weight:800;background:linear-gradient(90deg,var(--orange-soft),transparent)}
+.toc-lateral{display:none}
+.toc-titulo{font-size:12px;font-weight:800;letter-spacing:.08em;color:var(--ink2);margin:0 0 10px;text-transform:uppercase}
+.artigo{min-width:0;max-width:720px}
+.artigo h2{font-size:23px;line-height:1.3;margin:44px 0 12px;font-weight:800;scroll-margin-top:96px}
+.artigo h2::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--orange);margin-right:10px;vertical-align:middle;position:relative;top:-2px}
+.artigo h3{font-size:19px;margin:28px 0 10px;scroll-margin-top:96px}
 p{margin:0 0 14px}
-.lead{font-size:19px;color:var(--ink2)}
+.lead{font-size:19px;color:var(--ink2);margin-top:28px;padding-left:16px;border-left:3px solid var(--orange)}
 ul,ol{padding-left:24px;margin:0 0 16px}
 li{margin:0 0 8px}
-ol li::marker{color:var(--orange);font-weight:800}
-ul li::marker{color:var(--green)}
+.artigo ol li::marker{color:var(--orange-ink);font-weight:800}
+.artigo ul li::marker{color:var(--green)}
 strong{font-weight:800}
-code{font-family:"JetBrains Mono",ui-monospace,Menlo,monospace;font-size:.86em;background:var(--orange-soft);color:#6E2A12;padding:1px 6px;border-radius:5px;overflow-wrap:anywhere}
+code{font-family:"JetBrains Mono",ui-monospace,Menlo,monospace;font-size:.86em;background:var(--orange-soft);color:#6E2A12;padding:1px 6px;border-radius:5px;overflow-wrap:anywhere;font-variant-ligatures:none;font-feature-settings:"liga" 0,"calt" 0}
 .code{background:var(--code-bg);border-radius:12px;margin:6px 0 22px;overflow:hidden}
 .code-bar{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;border-bottom:1px solid #34312B;font-size:13px;color:#BDB5A6;font-weight:600}
-.copiar{font:inherit;font-size:13px;color:var(--code-ink);background:#2E2B26;border:1px solid #47423A;border-radius:7px;padding:5px 12px;cursor:pointer;min-height:32px}
+.copiar{font:inherit;font-size:13px;color:var(--code-ink);background:#2E2B26;border:1px solid #47423A;border-radius:7px;padding:5px 12px;cursor:pointer;min-height:36px;min-width:84px}
 .copiar:hover{background:#3A362F}
 .copiar.ok{background:var(--green);border-color:var(--green)}
 pre{margin:0;padding:14px 16px;overflow-x:auto;-webkit-overflow-scrolling:touch}
-pre code{background:none;color:var(--code-ink);padding:0;font-size:14px;line-height:1.6;white-space:pre;overflow-wrap:normal;border-radius:0;font-variant-ligatures:none;font-feature-settings:"liga" 0,"calt" 0}
-.lista{list-style:none;padding:0;margin:28px 0 0;display:grid;gap:16px}
-.lista li{margin:0}
-.card{display:block;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 20px;text-decoration:none;color:var(--ink);transition:border-color .15s,transform .15s}
-.card:hover{border-color:var(--orange);transform:translateY(-2px)}
-.card .kw{display:inline-block;font-size:12px;font-weight:800;letter-spacing:.08em;color:var(--orange);margin-bottom:8px}
+pre code{background:none;color:var(--code-ink);padding:0;font-size:14px;line-height:1.6;white-space:pre;overflow-wrap:normal;border-radius:0}
+.fim{margin-top:52px;display:grid;gap:16px}
+.bloco{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px 20px}
+.siga{background:var(--kombu);border-color:var(--kombu);color:#F1ECE2;display:flex;flex-direction:column;gap:14px}
+.siga .rot{font-size:12px;font-weight:800;letter-spacing:.08em;color:var(--orange);text-transform:uppercase}
+.siga h2{margin:0;font-size:22px;line-height:1.3;color:#F1ECE2}
+.siga h2::before{display:none}
+.siga p{margin:0;color:#CFD6CF;font-size:16px}
+.botao{display:inline-flex;align-items:center;justify-content:center;gap:8px;align-self:flex-start;background:var(--orange);color:#1A0B05;font-weight:800;font-size:16px;text-decoration:none;border-radius:999px;padding:12px 20px;min-height:48px}
+.botao:hover{background:#E38A6D}
+.card{display:block;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px 20px;text-decoration:none;color:var(--ink);transition:border-color .15s,transform .15s,box-shadow .15s}
+.card:hover{border-color:var(--orange);box-shadow:0 10px 24px -16px rgba(80,40,20,.45)}
+@media (prefers-reduced-motion:no-preference){.card:hover{transform:translateY(-2px)}}
+.card .kw{display:inline-block;font-size:12px;font-weight:800;letter-spacing:.08em;color:var(--orange-ink);margin-bottom:8px;text-transform:uppercase}
 .card h3{margin:0 0 8px;font-size:20px;line-height:1.3;font-weight:800}
-.card p{margin:0 0 12px;color:var(--ink2);font-size:16px}
-.card .ir{font-weight:700;color:var(--green);font-size:15px}
-.voltar{display:inline-block;margin-top:36px;font-weight:700;color:var(--green);text-decoration:none}
-footer{margin-top:48px;padding-top:20px;border-top:1px solid var(--line);font-size:14px;color:var(--ink2);font-weight:600}
-@media (min-width:900px){.wrap{padding-top:56px}body{font-size:18px}}
+.card p{margin:0 0 14px;color:var(--ink2);font-size:16px}
+.card .pe{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;justify-content:space-between}
+.card .min{font-size:14px;font-weight:700;color:var(--ink2)}
+.card .ir{font-weight:800;color:var(--green);font-size:15px}
+.lista{list-style:none;padding:0;margin:28px 0 0;display:grid;gap:16px}
+.lista li{margin:0;display:grid}
+.lista .card{display:flex;flex-direction:column}.lista .card .pe{margin-top:auto}
+.idx .topo .todos{display:none}
+.voltar{display:inline-block;margin-top:8px;font-weight:800;color:var(--green);text-decoration:none}
+.voltar:hover{text-decoration:underline}
+.rodape{max-width:1120px;margin:0 auto;padding:28px 16px 40px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 20px;font-size:14px;color:var(--ink2);font-weight:600}
+.rodape img{height:44px;width:auto;display:block}
+.rodape a{color:var(--ink2)}
+.idx .corpo{border-top:0}
+.idx .hero{padding-bottom:8px}
+@media (min-width:700px){.fim{grid-template-columns:1fr 1fr}.lista{grid-template-columns:1fr 1fr}.hero{padding-top:52px}.retrato{aspect-ratio:4/3}}
+@media (min-width:900px){.hero-in{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:64px;align-items:center}.retrato-wrap{order:0;margin:0 14px 14px 0}.retrato-wrap::before{inset:22px -14px -14px 22px;border-radius:32px}.retrato{aspect-ratio:4/5;border-radius:28px;max-height:620px}.retrato img{object-position:50% 0}.retrato figcaption{left:18px;bottom:18px;max-width:calc(100% - 36px);padding:14px 18px;border-radius:16px}.retrato .nome{font-size:18px}.retrato .sub{font-size:14px}}
+@media (min-width:1024px){
+ body{font-size:18px}
+ .topo{padding:24px 32px 0}.hero{padding:48px 32px 56px}.corpo{padding:0 32px 56px}.rodape{padding:28px 32px 48px}
+ .marca img{height:46px}
+ .toc-movel{display:none}
+ .grade{display:grid;grid-template-columns:240px minmax(0,720px);gap:64px;align-items:start}
+ .toc-lateral{display:block;position:sticky;top:28px;padding-top:44px;max-height:calc(100vh - 40px);overflow:auto}
+ .lead{margin-top:44px}
+ .artigo h2,.artigo h3{scroll-margin-top:24px}
+}
 </style>
 </head>
-<body>
-<div class="wrap">
-<div class="top"><span class="dot"></span><a href="./">Guias de Claude Code</a></div>
-<h1>Guias de Claude Code</h1>
-<p class="lead">Guias práticos de Claude Code, com passo a passo, erros e limites.</p>
-<ul class="lista"><li><a class="card" href="mcp/"><span class="kw">MCP</span><h3>Antes de ligar um MCP: veja o que cada ferramenta declara</h3><p>Todo servidor MCP diz, ferramenta por ferramenta, se ela só lê, se é seguro repetir e se pode destruir. Dá para ler isso antes de ligar o servidor no Claude Code, em menos de um minuto.</p><span class="ir">Abrir o guia</span></a></li><li><a class="card" href="lentes/"><span class="kw">LENTES</span><h3>Como montar um fluxo de agentes que escolhe o que postar</h3><p>Uma redação de agentes no Claude Code: as ideias chegam em lotes, quatro lentes debatem cada uma, um juiz ordena, um revisor dá nota, um guardião confere a peça e nada sai sem o meu OK. O agente propõe e debate; a decisão continua comigo.</p><span class="ir">Abrir o guia</span></a></li></ul>
-<footer>Francisco Neto · @francisconeto.dev</footer>
-</div>
+<body class="idx">
+<div class="progresso" aria-hidden="true"><span></span></div>
+<header class="topo"><a class="marca" href="" aria-label="Guias de Claude Code, início"><img src="assets/assinatura.svg" alt="Francisco Neto" width="138" height="40"></a><a class="todos" href="">Todos os guias</a></header>
+<section class="hero"><div class="hero-in"><div class="hero-txt"><span class="tag">GUIAS</span><h1>Guias de Claude Code</h1><p class="promessa">Guias práticos de Claude Code, com passo a passo, erros e limites.</p><ul class="meta"><li>Atualizado em 28/10/2026</li></ul></div><div class="retrato-wrap"><figure class="retrato"><img src="assets/autor-inteiro.jpg" width="899" height="1200" alt="Francisco Neto" fetchpriority="high" decoding="async"><figcaption><span class="nome">Francisco Neto</span><span class="sub"><a class="handle" href="https://instagram.com/francisconeto.dev" rel="noopener">@francisconeto.dev</a> · Testado por mim no Claude Code</span></figcaption></figure></div></div></section><div class="corpo"><ul class="lista"><li><a class="card" href="mcp/"><span class="kw">Guia MCP</span><h3>Antes de ligar um MCP: veja o que cada ferramenta declara</h3><p>Você vai ver, antes de ligar um servidor MCP no Claude Code, se cada ferramenta só lê, se é seguro repetir e se pode destruir.</p><div class="pe"><span class="min">5 min de leitura</span><span class="ir">Abrir o guia</span></div></a></li><li><a class="card" href="lentes/"><span class="kw">Guia Lentes</span><h3>Como montar um fluxo de agentes que escolhe o que postar</h3><p>Você vai montar no Claude Code uma redação de agentes que debate, ordena e revisa ideias de post, com a decisão final sempre sua.</p><div class="pe"><span class="min">5 min de leitura</span><span class="ir">Abrir o guia</span></div></a></li></ul></div>
+<footer class="rodape"><a class="marca" href="" aria-label="Guias de Claude Code, início"><img src="assets/assinatura.svg" alt="Francisco Neto" width="152" height="44"></a><span>Guias de Claude Code · <a href="https://instagram.com/francisconeto.dev" rel="noopener">@francisconeto.dev</a></span></footer>
 <script>
+(function(){
 document.querySelectorAll('.copiar').forEach(function(b){b.addEventListener('click',function(){
 var t=b.closest('.code').querySelector('pre code').innerText;
 var done=function(){b.textContent='Copiado';b.classList.add('ok');setTimeout(function(){b.textContent='Copiar';b.classList.remove('ok')},1600)};
 if(navigator.clipboard){navigator.clipboard.writeText(t).then(done,function(){})}else{var a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();document.execCommand('copy');a.remove();done()}
 })});
+var bar=document.querySelector('.progresso span');
+var heads=[].slice.call(document.querySelectorAll('.artigo h2[id],.artigo h3[id]'));
+var links=[].slice.call(document.querySelectorAll('.toc a'));
+var atual=document.querySelector('.toc-movel .atual');
+function ativa(id){if(atual){var l=id&&links.filter(function(a){return a.getAttribute('href')==='#'+id})[0];atual.textContent=l?l.textContent:''}links.forEach(function(a){var on=id&&a.getAttribute('href')==='#'+id;a.classList.toggle('ativo',!!on);if(on){a.setAttribute('aria-current','true')}else{a.removeAttribute('aria-current')}})}
+function noFim(){var h=document.documentElement;return h.scrollHeight-h.clientHeight-window.scrollY<4}
+function calcula(){if(!heads.length)return;var lim=window.innerHeight*0.3,cur=null;heads.forEach(function(h){if(h.getBoundingClientRect().top<=lim)cur=h});if(noFim()&&window.scrollY>0)cur=heads[heads.length-1];ativa(cur?cur.id:null)}
+function progresso(){if(!bar)return;var h=document.documentElement,max=h.scrollHeight-h.clientHeight,p=max>0?window.scrollY/max:0;bar.style.transform='scaleX('+Math.min(1,Math.max(0,p))+')'}
+if('IntersectionObserver' in window&&heads.length){var io=new IntersectionObserver(calcula,{rootMargin:'0px 0px -70% 0px',threshold:[0,1]});heads.forEach(function(h){io.observe(h)})}
+var pend=false;window.addEventListener('scroll',function(){if(pend)return;pend=true;requestAnimationFrame(function(){pend=false;progresso();if(noFim())calcula()})},{passive:true});
+window.addEventListener('resize',function(){progresso();calcula()});
+var det=document.querySelector('.toc-movel');
+if(det){det.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){det.open=false})})}
+progresso();calcula();
+})();
 </script>
 </body>
 </html>
