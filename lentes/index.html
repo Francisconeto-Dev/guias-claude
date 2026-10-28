@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Como montar um fluxo de agentes que escolhe o que postar</title>
+<meta name="description" content="Uma redação de agentes no Claude Code: as ideias chegam em lotes, quatro lentes debatem cada uma, um juiz ordena, um revisor dá nota, um guardião confere a peça e nada sai sem o meu OK. O agente...">
+<meta name="author" content="Francisco Neto">
+<meta name="theme-color" content="#F3EDE2">
+<link rel="canonical" href="https://francisconeto-dev.github.io/guias-claude/lentes/">
+<meta property="og:type" content="article">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:site_name" content="Guias de Claude Code">
+<meta property="og:title" content="Como montar um fluxo de agentes que escolhe o que postar">
+<meta property="og:description" content="Uma redação de agentes no Claude Code: as ideias chegam em lotes, quatro lentes debatem cada uma, um juiz ordena, um revisor dá nota, um guardião confere a peça e nada sai sem o meu OK. O agente...">
+<meta property="og:url" content="https://francisconeto-dev.github.io/guias-claude/lentes/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Como montar um fluxo de agentes que escolhe o que postar">
+<meta name="twitter:description" content="Uma redação de agentes no Claude Code: as ideias chegam em lotes, quatro lentes debatem cada uma, um juiz ordena, um revisor dá nota, um guardião confere a peça e nada sai sem o meu OK. O agente...">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F3EDE2;--card:#FBF8F2;--ink:#151412;--ink2:#4A463F;--line:#DDD4C4;--orange:#C8562F;--orange-soft:#F4DDD0;--green:#2E6B4A;--green-soft:#DCE9DF;--code-bg:#1B1A17;--code-ink:#F1ECE2}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Manrope,system-ui,-apple-system,sans-serif;font-size:17px;line-height:1.65}
+.wrap{max-width:760px;margin:0 auto;padding:28px 16px 40px}
+a{color:var(--orange);text-underline-offset:3px;overflow-wrap:anywhere}
+.top{display:flex;align-items:center;gap:10px;font-weight:700;font-size:14px;letter-spacing:.02em;margin-bottom:28px}
+.top a{color:var(--ink);text-decoration:none}
+.dot{width:10px;height:10px;border-radius:50%;background:var(--orange);display:inline-block}
+.tag{display:inline-block;background:var(--green-soft);color:var(--green);font-weight:700;font-size:13px;padding:4px 10px;border-radius:999px;margin-bottom:14px}
+h1{font-size:clamp(28px,7vw,42px);line-height:1.15;letter-spacing:-.02em;margin:0 0 16px;font-weight:800}
+h2{font-size:22px;line-height:1.3;margin:40px 0 12px;font-weight:800;padding-top:4px;border-top:2px solid var(--line);padding-top:24px}
+h2::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--orange);margin-right:10px;vertical-align:middle;position:relative;top:-2px}
+p{margin:0 0 14px}
+.lead{font-size:19px;color:var(--ink2)}
+ul,ol{padding-left:24px;margin:0 0 16px}
+li{margin:0 0 8px}
+ol li::marker{color:var(--orange);font-weight:800}
+ul li::marker{color:var(--green)}
+strong{font-weight:800}
+code{font-family:"JetBrains Mono",ui-monospace,Menlo,monospace;font-size:.86em;background:var(--orange-soft);color:#6E2A12;padding:1px 6px;border-radius:5px;overflow-wrap:anywhere}
+.code{background:var(--code-bg);border-radius:12px;margin:6px 0 22px;overflow:hidden}
+.code-bar{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;border-bottom:1px solid #34312B;font-size:13px;color:#BDB5A6;font-weight:600}
+.copiar{font:inherit;font-size:13px;color:var(--code-ink);background:#2E2B26;border:1px solid #47423A;border-radius:7px;padding:5px 12px;cursor:pointer;min-height:32px}
+.copiar:hover{background:#3A362F}
+.copiar.ok{background:var(--green);border-color:var(--green)}
+pre{margin:0;padding:14px 16px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+pre code{background:none;color:var(--code-ink);padding:0;font-size:14px;line-height:1.6;white-space:pre;overflow-wrap:normal;border-radius:0;font-variant-ligatures:none;font-feature-settings:"liga" 0,"calt" 0}
+.lista{list-style:none;padding:0;margin:28px 0 0;display:grid;gap:16px}
+.lista li{margin:0}
+.card{display:block;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 20px;text-decoration:none;color:var(--ink);transition:border-color .15s,transform .15s}
+.card:hover{border-color:var(--orange);transform:translateY(-2px)}
+.card .kw{display:inline-block;font-size:12px;font-weight:800;letter-spacing:.08em;color:var(--orange);margin-bottom:8px}
+.card h3{margin:0 0 8px;font-size:20px;line-height:1.3;font-weight:800}
+.card p{margin:0 0 12px;color:var(--ink2);font-size:16px}
+.card .ir{font-weight:700;color:var(--green);font-size:15px}
+.voltar{display:inline-block;margin-top:36px;font-weight:700;color:var(--green);text-decoration:none}
+footer{margin-top:48px;padding-top:20px;border-top:1px solid var(--line);font-size:14px;color:var(--ink2);font-weight:600}
+@media (min-width:900px){.wrap{padding-top:56px}body{font-size:18px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="top"><span class="dot"></span><a href="../">Guias de Claude Code</a></div>
+<span class="tag">Guia LENTES</span>
+<h1>Como montar um fluxo de agentes que escolhe o que postar</h1>
+<p class="lead">Uma redação de agentes no Claude Code: as ideias chegam em lotes, quatro lentes debatem cada uma, um juiz ordena, um revisor dá nota, um guardião confere a peça e nada sai sem o meu OK. O agente propõe e debate; a decisão continua comigo.</p>
+<h2>O que eu fiz com isso</h2>
+<p>No primeiro ensaio (22/10/2026), os agentes leram <strong>32 ideias</strong> de post e deixaram <strong>19</strong> para a semana.</p>
+<ul><li>O juiz ordenou tudo 3 vezes, em ordem embaralhada: <strong>6 empates em 32 ideias</strong>. As pontas ficaram firmes; o meio oscilou.</li><li>O revisor deu nota aos 19 posts: <strong>7 com 10, 7 com 9 e 5 com 8</strong>, no piso. Nenhum voltou para reescrever.</li><li>Nenhum foi ao ar sem o meu OK, item por item.</li></ul>
+<h2>As 6 etapas</h2>
+<ol><li><strong>Ideias em lotes de 5.</strong> Cada ideia vem com a chance de ser o post típico que qualquer conta de IA faria. A mais típica cai. Fica a ideia com experiência minha, teste ou opinião com exemplo.</li><li><strong>Conselho de 4 lentes, em 2 rodadas.</strong> Gancho, história, público e risco. Cada lente escreve pró, contra, risco e uma posição (a favor, neutra, contra). Na segunda rodada, cada lente lê só as 2 opiniões mais diferentes da dela e pode mudar de ideia.</li><li><strong>Juiz com 3 ordens embaralhadas.</strong> O juiz vê códigos, não nomes, e não sabe qual lente gostou de quê. Ideia que sobe e desce mais de 2 lugares entre as 3 ordens conta como empate.</li><li><strong>Revisor com piso 8.</strong> Nota de 0 a 10 em 5 critérios (0, 1 ou 2 cada): fato com origem, especificidade, primeira linha, voz e marcas de texto de IA. Abaixo de 8 volta, no máximo 2 vezes.</li><li><strong>Guardião da marca.</strong> Toda peça visual passa por 11 checagens (fonte, cor, contraste, área segura, travessão, dado pessoal...). Reprovou duas vezes, não sai.</li><li><strong>Meu OK.</strong> Tudo entra como rascunho e espera a minha aprovação.</li></ol>
+<h2>Pré-requisitos</h2>
+<ul><li>Claude Code.</li><li>Python 3 para as contas (sorteio, distâncias, soma das ordens). Conta não é trabalho de modelo.</li><li>Uma pasta por rodada, com um arquivo por etapa.</li></ul>
+<h2>Passo a passo</h2>
+<ol><li>Crie a estrutura da rodada:</li></ol>
+<div class="code"><div class="code-bar"><span>Terminal</span><button type="button" class="copiar">Copiar</button></div><pre><code>mkdir -p ensaio/AAAA-MM-DD/{03-conselho,04-juiz} lentes ferramentas</code></pre></div>
+<ol start="2"><li>Escreva um arquivo por papel em <code>lentes/</code>: <code>gancho.md</code>, <code>historia.md</code>, <code>publico.md</code>, <code>risco.md</code>, <code>juiz.md</code> e <code>revisor.md</code>. Cada um diz o que o agente recebe, o que avalia e o formato exato da resposta. No <code>revisor.md</code>, os 5 critérios e o piso.</li><li>Gere as ideias em lotes de 5 e grave em <code>ensaio/AAAA-MM-DD/02-ideias.json</code>, uma ideia por item, com <code>id</code>, <code>grupo</code> e o texto.</li><li>Rodada 1 do conselho: peça ao Claude Code para rodar 4 subagentes em paralelo, um por lente, cada um com o seu arquivo de <code>lentes/</code> e o <code>02-ideias.json</code>. Cada um grava <code>03-conselho/r1-&lt;lente&gt;.json</code> com a posição de cada ideia.</li><li>Calcule, para cada lente, as 2 mais diferentes dela. A conta é a soma das diferenças de posição (a favor = 1, neutra = 0, contra = -1):</li></ol>
+<div class="code"><div class="code-bar"><span>Python</span><button type="button" class="copiar">Copiar</button></div><pre><code>import json, os, sys, glob
+VAL = {"a favor": 1, "neutra": 0, "contra": -1}
+pasta = sys.argv[1]
+r1 = {os.path.basename(f)[3:-5]: json.load(open(f)) for f in glob.glob(os.path.join(pasta, "r1-*.json"))}
+pos = lambda d, i: VAL.get(str(d.get(i, {}).get("posicao", "")).strip().lower(), 0)
+out = {}
+for a in r1:
+    dist = sorted(((sum(abs(pos(r1[a], i) - pos(r1[b], i)) for i in set(r1[a]) &amp; set(r1[b])), b) for b in r1 if b != a), reverse=True)
+    out[a] = [b for _, b in dist[:2]]
+json.dump(out, open(os.path.join(pasta, "distancias.json"), "w"), ensure_ascii=False, indent=2)</code></pre></div>
+<div class="code"><div class="code-bar"><span>Terminal</span><button type="button" class="copiar">Copiar</button></div><pre><code>python3 ferramentas/distancias.py ensaio/AAAA-MM-DD/03-conselho</code></pre></div>
+<ol start="6"><li>Rodada 2: cada lente recebe só as 2 avaliações do <code>distancias.json</code> e grava <code>r2-&lt;lente&gt;.json</code>, mudando ou mantendo a posição, com o porquê.</li><li>Juiz: um script embaralha as ideias 3 vezes e troca cada uma por um código; 3 subagentes, um por ordem, devolvem o ranking de cada grupo. Outro script soma as 3 ordens e marca empate quando a posição varia mais de 2 lugares:</li></ol>
+<div class="code"><div class="code-bar"><span>Python</span><button type="button" class="copiar">Copiar</button></div><pre><code>empate = max(posicoes) - min(posicoes) &gt; 2</code></pre></div>
+<ol start="8"><li>Escolha as vagas da semana pelo ranking, pelo formato e pela cota de cada conta. Os empates do meio decidem por formato, não pela posição.</li><li>Um subagente redator escreve cada post e o revisor dá a nota. Abaixo de 8, volta com os comentários.</li><li>As peças visuais passam pelo guardião; o que passa entra como rascunho para o meu OK.</li></ol>
+<h2>Erros que eu tive e como resolvi</h2>
+<ul><li>O juiz oscila no meio da lista. Em vez de confiar numa ordem só, rodei 3 ordens embaralhadas e tratei a oscilação como empate.</li><li>O detector de texto de IA que eu uso é calibrado para inglês. Em português, só conto as linhas de padrão e de ritmo dele; a nota geral não vale.</li><li>A lista de vagas que eu pedi somava 19 e não 20. O agente da escolha avisou em vez de inventar uma vaga a mais.</li></ul>
+<h2>Limites</h2>
+<ul><li>O juiz e as lentes são modelos: concordam muito nas pontas e pouco no meio.</li><li>O revisor só mede ofício checável (fato, especificidade, primeira linha, voz, marcas de IA). Se o assunto é bom, quem decide sou eu.</li><li>Fato só entra com origem. Sem origem, o texto volta, seja qual for a nota.</li></ul>
+<h2>Fontes</h2>
+<ul><li>Subagentes no Claude Code: <a href="https://docs.anthropic.com/en/docs/claude-code/sub-agents" rel="noopener">https://docs.anthropic.com/en/docs/claude-code/sub-agents</a></li><li>Boas práticas do Claude Code: <a href="https://www.anthropic.com/engineering/claude-code-best-practices" rel="noopener">https://www.anthropic.com/engineering/claude-code-best-practices</a></li></ul>
+<a class="voltar" href="../">Ver todos os guias</a>
+<footer>Francisco Neto · @francisconeto.dev</footer>
+</div>
+<script>
+document.querySelectorAll('.copiar').forEach(function(b){b.addEventListener('click',function(){
+var t=b.closest('.code').querySelector('pre code').innerText;
+var done=function(){b.textContent='Copiado';b.classList.add('ok');setTimeout(function(){b.textContent='Copiar';b.classList.remove('ok')},1600)};
+if(navigator.clipboard){navigator.clipboard.writeText(t).then(done,function(){})}else{var a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();document.execCommand('copy');a.remove();done()}
+})});
+</script>
+</body>
+</html>
